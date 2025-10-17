@@ -1,0 +1,12 @@
+# Build output (bỏ qua file sinh ra sau khi compile)
+target/
+out/
+*.class
+
+# IDE (bỏ qua file cài đặt VS Code, IntelliJ,...)
+.vscode/
+.idea/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
