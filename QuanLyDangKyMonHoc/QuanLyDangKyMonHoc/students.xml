@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<students>
+    <student>
+        <id>23010185</id>
+        <name>phạm văn hiếu</name>
+        <gender>Nam</gender>
+        <yearOfBirth>2005</yearOfBirth>
+        <email>phamvanhieu2315@gmail.com</email>
+    </student>
+</students>
