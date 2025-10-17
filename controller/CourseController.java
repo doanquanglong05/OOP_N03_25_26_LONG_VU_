@@ -1,28 +1,69 @@
-package com.quanly.quanly_dangky.controller;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Controller;
+import Entity.*;
+import Utils.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.quanly.quanly_dangky.entity.Course;
-import com.quanly.quanly_dangky.entity.CourseList;
-import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
 public class CourseController {
+    private List<Course> courses = new ArrayList<>();
+    private final String FILE_NAME = "courses.xml";
 
-    private final CourseList courseList = new CourseList();
-
-    @PostConstruct
-    void init() {
-        // dữ liệu demo
-        courseList.addCourse(new Course("IT101", "Intro to IT", 3, "Basics of IT"));
-        courseList.addCourse(new Course("DB201", "Database", 3, "SQL & Relational"));
-        courseList.addCourse(new Course("NW301", "Networking", 3, "TCP/IP fundamentals"));
+    public CourseController() {
+        FileUtils.initFileIfNotExists(FILE_NAME, new CourseList());
+        CourseList list = (CourseList) FileUtils.readXMLFile(FILE_NAME, CourseList.class);
+        if (list != null) {
+            courses = list.getCourses();
+        }
     }
 
-    @GetMapping("/courses")
-    public String listCourses(Model model) {
-        model.addAttribute("courses", courseList.getCourses());
-        return "courses"; // -> templates/courses.html
+    public boolean addCourse(Course course) {
+        if (findCourseById(course.getCourseId()) != null) return false;
+        courses.add(course);
+        saveToFile();
+        return true;
+    }
+
+    public boolean updateCourse(Course updatedCourse) {
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getCourseId().equals(updatedCourse.getCourseId())) {
+                courses.set(i, updatedCourse);
+                saveToFile();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteCourse(String id) {
+        boolean removed = courses.removeIf(c -> c.getCourseId().equals(id));
+        if (removed) saveToFile();
+        return removed;
+    }
+
+    public Course findCourseById(String id) {
+        return courses.stream().filter(c -> c.getCourseId().equals(id)).findFirst().orElse(null);
+    }
+
+    public List<Course> searchByName(String keyword) {
+        keyword = keyword.toLowerCase();
+        List<Course> result = new ArrayList<>();
+        for (Course c : courses) {
+            if (c.getCourseName().toLowerCase().contains(keyword)) {
+                result.add(c);
+            }
+        }
+        return result;
+    }
+
+    public List<Course> getAllCourses() {
+        return courses;
+    }
+
+    private void saveToFile() {
+        FileUtils.writeXMLtoFile(FILE_NAME, new CourseList(courses));
     }
 }

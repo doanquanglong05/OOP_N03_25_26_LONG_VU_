@@ -1,5 +1,13 @@
-package com.quanly.quanly_dangky.entity;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Entity;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "course")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
     private String courseId;
     private String courseName;
@@ -15,13 +23,11 @@ public class Course {
         this.description = description;
     }
 
-    // Getter
     public String getCourseId() { return courseId; }
     public String getCourseName() { return courseName; }
     public int getCredit() { return credit; }
     public String getDescription() { return description; }
 
-    // Setter
     public void setCourseId(String courseId) { this.courseId = courseId; }
     public void setCourseName(String courseName) { this.courseName = courseName; }
     public void setCredit(int credit) { this.credit = credit; }
